@@ -4,6 +4,10 @@
 // import java.util.Map;
 // import java.util.TreeMap;
 
+import java.util.Comparator;
+import java.util.Map;
+import java.util.TreeMap;
+
 /**
  * Application to demonstrate a TreeMap storing key:value pairs in sorted
  * order based on natural ordering of keys and also a different ordering
@@ -12,7 +16,8 @@
 public class TollRoad {
     // TODO 1: Declare two Map variables to associate String keys with Vehicle objects.
     // TODO 1: One will sort by vehicle description and one will sort by vehicle state.
-
+    private Map<String, Vehicle> vehiclesByDescription;
+    private Map<String, Vehicle> vehiclesByState;
 
 
     /**
@@ -23,8 +28,10 @@ public class TollRoad {
     public TollRoad() {
         // TODO 2: Create the two TreeMap objects, the second of which must be
         // TODO 2: given an appropriate Comparator object when constructed.
+        vehiclesByDescription = new TreeMap<>();
 
-
+        Comparator<String> stateComparator = (s1, s2) -> s1.substring(1).compareTo(s2.substring(1));
+        vehiclesByState = new TreeMap<>(stateComparator);
     }
 
     /**
@@ -37,7 +44,15 @@ public class TollRoad {
      */
     public void addToll(String description) {
         // TODO 3: Complete this method as described in the exercise.
+        Vehicle vehicle = vehiclesByDescription.get(description);
 
+        if (vehicle == null) {
+            vehicle = new Vehicle(description);
+            vehiclesByDescription.put(description, vehicle);
+            vehiclesByState.put(description, vehicle);
+        } else {
+            vehicle.addToll();
+        }
     }
 
     /**
@@ -48,7 +63,13 @@ public class TollRoad {
      */
     public String getVehicleReportByDescription() {
         // TODO 4: Complete this method as described in the exercise.
-        return null;
+        StringBuilder report = new StringBuilder();
+        for (Map.Entry<String, Vehicle> entry : vehiclesByDescription.entrySet()) {
+            report.append("Description: ").append(entry.getKey())
+                    .append(", Toll Count: ").append(entry.getValue().getTollCount()).append("\n");
+        }
+        return report.toString();
+        //return null;
     }
 
     /**
@@ -59,7 +80,13 @@ public class TollRoad {
      */
     public String getVehicleReportByState() {
         // TODO 5: Complete this method as described in the exercise.
-        return null;
+        StringBuilder report = new StringBuilder();
+        for (Map.Entry<String, Vehicle> entry : vehiclesByState.entrySet()) {
+            report.append("Description: ").append(entry.getKey())
+                    .append(", Toll Count: ").append(entry.getValue().getTollCount()).append("\n");
+        }
+        return report.toString();
+        //return null;
     }
 
     /**

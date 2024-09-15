@@ -46,4 +46,9 @@ public class Vehicle {
         return String.format("Description: %s, Toll Count: %d",
             this.description, this.tollCount);
     }
+
+    // created for quiz
+    public int getTollCount() {
+        return tollCount;
+    }
 }
